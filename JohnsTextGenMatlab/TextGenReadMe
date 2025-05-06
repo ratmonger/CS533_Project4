@@ -1,0 +1,11 @@
+This folder containsThe files used for creating generated Text Files. I have included the original files and files generated based on those files.
+To create a text file Run MarkovTextGenerator.m
+Input variables : Input files name(The reference text file) Output file name (File to be generated) and seedWord, which needs to be a word in the reference text.
+All punctuation is removed from reference text file
+No punctuation in output text file
+Output file is the same number of words as reference file.
+A dictionary is created for each different word(base word) from the reference text file 
+The dictionary entries are each word following(following word) the base word with the probability that the particular following word will occure after the given base word in the original text.
+When generating the text the seed word is placed a the first word of the generated text file output(GTFO).
+The next word in the GTFO is chosed from the following word dictionary for that base word based on th eprobabilities associated with the following words.
+This process is reapeated until the file contains an identical number of words as the reference text.
