@@ -110,3 +110,49 @@ ci_upper = np.percentile(phi_bootstrap, 97.5)
 print(f"Bootstrap Mean φ: {mean_phi:.4f}")
 print(f"Bootstrap SE: {se_phi:.4f}")
 print(f"Bootstrap 95% CI for φ: [{ci_lower:.4f}, {ci_upper:.4f}]")
+
+
+# -------------- P-VALUE ACCUMULATION ACROSS TRIALS ------------------
+def collect_p_values(tokens_a, tokens_b, n_experiments=100, n_perms=100):
+    p_values = []
+
+    for _ in range(n_experiments):
+        # Optionally: resample tokens to simulate variability
+        a_sample = random.choices(tokens_a, k=len(tokens_a))
+        b_sample = random.choices(tokens_b, k=len(tokens_b))
+
+        # Build vocab for this run
+        vocab = set(a_sample).union(b_sample)
+        fa = get_normalized_freq(a_sample, vocab)
+        fb = get_normalized_freq(b_sample, vocab)
+        phi_obs = distribution_distance(fa, fb)
+
+        # Permutation test
+        phi_null = []
+        combined = a_sample + b_sample
+        len_a = len(a_sample)
+        for _ in range(n_perms):
+            random.shuffle(combined)
+            pa = combined[:len_a]
+            pb = combined[len_a:]
+            fa_perm = get_normalized_freq(pa, vocab)
+            fb_perm = get_normalized_freq(pb, vocab)
+            phi_null.append(distribution_distance(fa_perm, fb_perm))
+
+        # Calculate p-value
+        p_val = np.mean(np.array(phi_null) >= phi_obs)
+        p_values.append(p_val)
+    
+    return p_values
+
+# Run collection
+p_vals = collect_p_values(tokens_a, tokens_b, n_experiments=100, n_perms=100)
+
+# Plot
+plt.hist(p_vals, bins=20, edgecolor='black', alpha=0.7)
+plt.xlabel("p-value")
+plt.ylabel("Frequency")
+plt.title("Histogram of Permutation Test p-values")
+plt.axvline(0.05, color='red', linestyle='--', label='α = 0.05')
+plt.legend()
+plt.show()
