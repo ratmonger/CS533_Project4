@@ -5,7 +5,7 @@ from collections import defaultdict
 
 #SET DEFAULT CONFIG
 TEXT_SOURCE = "text/moby_dick.txt"
-K_GRAM = 6
+K_GRAM = 1
 
 
 def load_words(filepath):
