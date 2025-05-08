@@ -28,7 +28,7 @@ else:
 
 #set filename and set name used in plots
 basename = os.path.splitext(os.path.basename(file_a))[0] + "_vs_" + os.path.splitext(os.path.basename(file_b))[0]
-plotname = os.path.splitext(os.path.basename(file_a))[0] + "_vs_" + os.path.splitext(os.path.basename(file_b))[0]
+plotname = os.path.splitext(os.path.basename(file_a))[0] + " vs " + os.path.splitext(os.path.basename(file_b))[0]
 
 #loading data here
 def load_and_tokenize(filepath):
